@@ -13,10 +13,14 @@ class Product(models.Model):
     description = models.TextField()
     slug = models.SlugField()
     owner = models.ForeignKey(Profile, related_name='product', on_delete=models.CASCADE)
-    votes = models.ManyToManyField(Profile, related_name='votes_to')  # Votos puede ser una clase desde la cual se apunta a Productos y a el usuario. Queda mejor con ManyToMany
+    votes = models.ManyToManyField(Profile, related_name='votes_to')
+    url = models.URLField(blank=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        slug = slugify(self.title)
+        if Product.objects.filter(slug=slug).exists():
+            slug = slug + '-' + self.id
+        self.slug = slug
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -25,5 +29,12 @@ class Product(models.Model):
 
 class Image(models.Model):
     image = models.ImageField(upload_to='products/')
-    product = models.ForeignKey('Product', related_name='images', on_delete=models.CASCADE)
+    product = models.ForeignKey('products.Product', related_name='images', on_delete=models.CASCADE)
 
+
+class Vote(models.Model):
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['product', 'owner', ]

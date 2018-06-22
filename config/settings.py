@@ -41,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party Integration apps
-    'markdownx'
+    'markdownx',
 
     # Local apps
     'products',
-    'profiles'
+    'profiles',
+    'comments'
 ]
 
 MIDDLEWARE = [
