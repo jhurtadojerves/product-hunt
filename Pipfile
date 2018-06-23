@@ -9,6 +9,7 @@ name = "pypi"
 django = "*"
 django-markdownx = "*"
 django-debug-toolbar = "*"
+"psycopg2" = "*"
 
 [requires]
 python_version = "3.6"

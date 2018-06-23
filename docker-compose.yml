@@ -16,7 +16,7 @@ services:
         depends_on:
             - db
         environment:
-            - DJANGO_SETTINGS_MODULE=config.settings.production
+            - DJANGO_SETTINGS_MODULE=config.settings.local
             - SECRET_KEY=${SECRET_KEY}
 volumes:
     postgres_data:

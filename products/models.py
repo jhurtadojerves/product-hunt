@@ -1,5 +1,4 @@
 # Core imports
-from datetime import datetime
 from django.db import models
 from django.utils.text import slugify
 
@@ -13,10 +12,18 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     slug = models.SlugField()
-    owner = models.ForeignKey(Profile, related_name='product', on_delete=models.CASCADE)
-    votes = models.ManyToManyField(Profile, related_name='votes_to')
+    owner = models.ForeignKey(
+        Profile,
+        related_name='product',
+        on_delete=models.CASCADE
+    )
+    votes = models.ManyToManyField(
+        Profile,
+        related_name='votes_to',
+        through='Vote',
+    )
     url = models.URLField(blank=True)
-    pub_date = models.DateTimeField(default=datetime.now, auto_now=True)
+    pub_date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         slug = slugify(self.title)
@@ -31,12 +38,22 @@ class Product(models.Model):
 
 class Image(models.Model):
     image = models.ImageField(upload_to='products/')
-    product = models.ForeignKey('products.Product', related_name='images', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        'products.Product',
+        related_name='images',
+        on_delete=models.CASCADE
+    )
 
 
 class Vote(models.Model):
-    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        'products.Product',
+        on_delete=models.CASCADE,
+    )
+    owner = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         unique_together = ['product', 'owner', ]

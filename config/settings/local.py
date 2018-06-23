@@ -2,12 +2,14 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
-THIRD_PARTY_APPS += ('django_debug_toolbar',)
+THIRD_PARTY_APPS += ('debug_toolbar',)
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+
+MIDDLEWARE.insert(3, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 DATABASES = {
     'default': {
