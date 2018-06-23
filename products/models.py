@@ -1,4 +1,5 @@
 # Core imports
+from datetime import datetime
 from django.db import models
 from django.utils.text import slugify
 
@@ -15,6 +16,7 @@ class Product(models.Model):
     owner = models.ForeignKey(Profile, related_name='product', on_delete=models.CASCADE)
     votes = models.ManyToManyField(Profile, related_name='votes_to')
     url = models.URLField(blank=True)
+    pub_date = models.DateTimeField(default=datetime.now, auto_now=True)
 
     def save(self, *args, **kwargs):
         slug = slugify(self.title)
