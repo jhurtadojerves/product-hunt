@@ -18,3 +18,6 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
+    def __str__(self):
+        return self.user.get_full_name() or self.user.username
+
